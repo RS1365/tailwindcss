@@ -1,0 +1,53 @@
+// pages/patient-form.jsx
+import { useState } from 'react';
+import AnamnesisForm from '../components/AnamnesisForm';
+import OptometricEvaluationForm from '../components/OptometricEvaluationForm';
+
+export default function PatientForm() {
+  const [currentStep, setCurrentStep] = useState(1);
+  const [patientData, setPatientData] = useState(null);
+
+  const handleAnamnesisSubmit = (data) => {
+    // Aquí guardarías en Supabase
+    console.log('Datos anamnesis:', data);
+    setPatientData(data);
+    setCurrentStep(2);
+  };
+
+  const handleEvaluationSubmit = (data) => {
+    // Guardar evaluación en Supabase
+    console.log('Datos evaluación:', data);
+    alert('Formularios completados correctamente!');
+  };
+
+  return (
+    <div className="min-h-screen bg-gray-50 py-8">
+      <div className="max-w-4xl mx-auto mb-6">
+        <div className="flex justify-between items-center p-4">
+          <h1 className="text-3xl font-bold text-gray-800">
+            Sistema Optométrico
+          </h1>
+          <div className="flex items-center space-x-4">
+            <span className={`px-3 py-1 rounded-full ${
+              currentStep === 1 ? 'bg-blue-600 text-white' : 'bg-gray-300'
+            }`}>1</span>
+            <span className={`px-3 py-1 rounded-full ${
+              currentStep === 2 ? 'bg-blue-600 text-white' : 'bg-gray-300'
+            }`}>2</span>
+          </div>
+        </div>
+      </div>
+
+      {currentStep === 1 && (
+        <AnamnesisForm onSubmit={handleAnamnesisSubmit} />
+      )}
+
+      {currentStep === 2 && patientData && (
+        <OptometricEvaluationForm 
+          patientId={patientData.id} 
+          onSubmit={handleEvaluationSubmit}
+        />
+      )}
+    </div>
+  );
+}
